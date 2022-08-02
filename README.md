@@ -53,7 +53,7 @@ module com.tilab.jade {
 
 ```
 
-### 1.3. Compilation and packaging test
+### 1.3. Raw compilation and packaging
 
 
 ```shell
