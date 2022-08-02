@@ -59,35 +59,30 @@ module com.tilab.jade {
 ```shell
  Clone and move to directory:  p20-jade-fipa   
 
- Windows:    
- --------------
-  >  mkdir    builded
-  >  robocopy src\main\java\  builded\    /XF *.java /E /NFL
-  >  dir      src\*.java   /s/b    >  sources.txt
+Windows:    
+--------------
+mkdir    builded
+robocopy src\main\java\  builded\    /XF *.java /E /NFL
+dir      src\*.java   /s/b    >  sources.txt
+javac --module-path ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
+jar --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
 
 
- GNU and OS-X:
- --------------
-  $  mkdir   builded
-  $  rsync   -av --exclude=*java  src/main/java/   builded/
-  $  find    .  -iname *java > sources.txt
-  
-  
- All of them, compilation and packaging:
- ---------------------------------------
+GNU and OS-X:
+--------------
+mkdir   builded
+rsync   -av --exclude=*java  src/main/java/   builded/
+find    .  -iname *java > sources.txt
+
+javac --module-path ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
+jar --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
  
-  $  javac --module-path ../p10-fipa-corba/org.fipa-2002.jar  @sources.txt -d builded/com.tilab.jade
-  $  jar   -cvf  com.tilab.jade-4.5.4-6868.jar  --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
+
+
   
-  or...
-  
-  $  jar  --create --file com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  builded/com.tilab.jade/module-info.class -C builded/com.tilab.jade  .
-  
-  
-  
- Testing:
- ----------------------------------------
-  $ java  -cp   com.tilab.jade-4.5.4-6868.jar   jade.Boot -gui -port 4455
+Testing:
+----------------------------------------
+java  -cp   com.tilab.jade-4.5.4-6868.jar   jade.Boot -gui -port 4455
   
   
 ```
