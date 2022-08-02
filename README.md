@@ -64,8 +64,9 @@ Windows:
 mkdir    builded
 robocopy src\main\java\  builded\    /XF *.java /E /NFL
 dir      src\*.java   /s/b    >  sources.txt
-javac --module-path ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
-jar --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
+
+javac --module-path  ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
+jar   --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
 
 
 GNU and OS-X:
@@ -75,7 +76,7 @@ rsync   -av --exclude=*java  src/main/java/   builded/
 find    .  -iname *java > sources.txt
 
 javac --module-path ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
-jar --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
+jar   --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
  
 
 
