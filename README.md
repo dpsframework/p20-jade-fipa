@@ -106,7 +106,7 @@ module com.tilab.jade {
 
 ```shell
 
- java --add-opens java.xml/com.sun.org.apache.xerces.internal.jaxp=jade -jar jade-4.5.4-6868.jar -gui
+ java --add-opens java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED -jar jade-4.5.4-6868.jar -gui
 ```
 
 - **And test it with**:
