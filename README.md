@@ -15,7 +15,7 @@ Full description of this proposal is available at:
 
 ### 1.1. To obtain the current version of JADE
 
-- Proceed with: 
+- **Use Maven for full packaging using:**
 
 ```shell
  git clone https://github.com/dpsframework/p20-jade-fipa.git
@@ -23,12 +23,12 @@ Full description of this proposal is available at:
 
  mvn package
 ```
-
+- That all!
 - This generates `jade-4.5.4-6868.jar` ready to use.
 
-## 1.2 A starting point for new proposals:
+### 1.2 A starting point for new proposals:
 
-### 1.2.1. Take a look at the file: `module-info.java`
+#### 1.2.1. Take a look at the file: `module-info.java`
 
 - It is located in the /src/main/java/jade/ directory.
 
@@ -69,7 +69,7 @@ module com.tilab.jade {
 ```
 
 
-### 1.2.2. To make a manual packaging from the console
+#### 1.2.2. To make a manual compiling/packaging from the console
 
 - **On Windows console**:
 
