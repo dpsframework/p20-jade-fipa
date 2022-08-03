@@ -23,7 +23,7 @@ Full description of this proposal is available at:
 
  mvn package
 ```
-- That all!
+- That's all!
 - This generates `jade-4.5.4-6868.jar` ready to use.
 
 ### 1.2 A starting point for new proposals:
@@ -88,7 +88,7 @@ module com.tilab.jade {
 
 
 
-- Compiling and packaging:
+- **Compiling and packaging by-hand with**:
 
 ```shell
  javac   -d   target/classes    @sources-jade.list
@@ -96,20 +96,26 @@ module com.tilab.jade {
  jar     --update --file jade-4.5.4-6868.jar --manifest=src/main/resources/META-INF/MANIFEST.MF
 ```
 
-- And check the result with:
+- **And check the result again with**:
 
 ```shell 
  java -jar jade-4.5.4-6868.jar -gui
 ```
 
-- If you need to access the JADE platform from port 7778, you need to use --add-opens with Java JDK-9 or higher. To do this proceed with:
+- **If you need to access the JADE platform from port 7778**, you need to use **--add-opens** with Java JDK-9 or higher. To do this proceed with:
 
 ```shell
 
  java --add-opens java.xml/com.sun.org.apache.xerces.internal.jaxp=jade -jar jade-4.5.4-6868.jar -gui
 ```
 
-- And check the result with: `http://localhost:7778/acc/` to obtain `WARNING: Malformed POST` on JADE Console output.
+- **And test it with**:
+
+```shell
+ http://localhost:7778/acc/
+ 
+```
+- To obtain `WARNING: Malformed POST` on JADE Console output.
 
 
 
