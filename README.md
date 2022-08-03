@@ -1,20 +1,36 @@
-# p20-jade-fipa: a proposal for upgrade JADE v4.5.4-r6868
+# p20-jade-fipa: a proposal to upgrade JADE-v4.5.4-r6868
 
-The full description of this update proposal can be found at:
+Full description of this proposal is available at:
 -  <https://dpsframework.org/proposals/P20-JADE-FIPA_en.html>
 
 
 ## 1. Introduction
 
-### 1.1. Description
+1. This is the exact version of JADE-4.5.4-6868, copied from the JADE Trunk, which has been prepared to be compiled with Maven.
+
+1. This proposal is a simple organization of the JADE code, which uses the sources of the CORBA and Apache Commons Codec libraries. This version of JADE (jade-4.5.4-6868.jar) is a perfect starting point to start a deeper analysis of the JADE Platform and its evolution in the next 5 years.
+
+1. Of course, all this is thanks to the efforts of the TILAB Team. And also, it is thanks to the proposed evolution in Java for the use of the Java Platform Module System.
 
 
--  It is proposed to use the Java Module System on top of the JADE 4.5.4 (2022) platform core. And connect JADE to the FIPA module internally through the declaration of the file module-info.java on `com.tilab.jade` to the file module-info.java on `org.fipa`.
+### 1.1. To obtain the current version of JADE
 
--  Once the unification with the FIPA module with the JADE 4.5.4 has been carried out, it will be possible to know the scope of the necessary changes in the JADE kernel; know what are the additional necessary libraries required by JADE 4.5.4 and allow JADE to be compiled with OpenJDK-17 or higher.
+- Proceed with: 
 
+```shell
+ git clone https://github.com/dpsframework/p20-jade-fipa.git
+ cd  p20-jade-fipa
 
-## 1.2 An example of the proposed module: `module-info.java`
+ mvn package
+```
+
+- This generates `jade-4.5.4-6868.jar` ready to use.
+
+## 1.2 A starting point for new proposals:
+
+### 1.2.1. Take a look at the file: `module-info.java`
+
+- It is located in the /src/main/java/jade/ directory.
 
 ```java
 /**
@@ -50,133 +66,55 @@ module com.tilab.jade {
 	requires java.net.http;
 }
 
-
 ```
 
-### 1.3. Raw compilation and packaging
 
+### 1.2.2. To make a manual packaging from the console
+
+- **On Windows console**:
 
 ```shell
- Clone and move to directory:  p20-jade-fipa   
-
-Windows:    
---------------
-mkdir    builded
-robocopy src\main\java\  builded\    /XF *.java /E /NFL
-dir      src\*.java   /s/b    >  sources.txt
-
-javac --module-path  ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
-jar   --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
-
-
-GNU and OS-X:
---------------
-mkdir   builded
-rsync   -av --exclude=*java  src/main/java/   builded/
-find    .  -iname *java > sources.txt
-
-javac --module-path ../p10-fipa-corba/org.fipa-2002.jar @sources.txt -d builded/com.tilab.jade
-jar   --create --file  com.tilab.jade-4.5.4-6868.jar --manifest=MANIFEST.MF  -C builded/com.tilab.jade .
- 
-
-
-  
-Testing:
-----------------------------------------
-java  -cp   com.tilab.jade-4.5.4-6868.jar   jade.Boot -gui -port 4455
-  
-  
+ robocopy src\main\java\        target\classes\    /XF *.java /E /NFL
+ dir      src\main\java\*.java   /s/b    >  sources-jade.list
 ```
+
+
+- **On GNU-Linux or OS-X**:
+
+```shell
+ rsync   -av --exclude=*java  src/main/java/   target/classes/
+ find    src/main/java/.  -iname  *java  -type f   > sources-jade.list
+```
+
+
+
+- Compiling and packaging:
+
+```shell
+ javac   -d   target/classes    @sources-jade.list
+ jar     --create --file  jade-4.5.4-6868.jar  -C target/classes  .
+ jar     --update --file jade-4.5.4-6868.jar --manifest=src/main/resources/META-INF/MANIFEST.MF
+```
+
+- And check the result with:
+
+```shell 
+ java -jar jade-4.5.4-6868.jar -gui
+```
+
+- If you need to access the JADE platform from port 7778, you need to use --add-opens with Java JDK-9 or higher. To do this proceed with:
+
+```shell
+
+ java --add-opens java.xml/com.sun.org.apache.xerces.internal.jaxp=jade -jar jade-4.5.4-6868.jar -gui
+```
+
+- And check the result with: `http://localhost:7778/acc/` to obtain `WARNING: Malformed POST` on JADE Console output.
+
 
 
 **Fig. 1**: From the JADE RMA Agent Actions menu, an agent of type `jade.tools.testagent.TestAgent` named **Test22** has been created. It is visible in the lower left corner. With the "Start-DummigAgent" button, the agent named "da0@local-ip-address/JADE" has been created. And an INFORM type message with "fipa-request" Interaction Protocol has been sent between these entities. The message is received and displayed by the Test22 agent.
+
 ![Results of test](./images/test-jade-rma-agent-454-6868-Java-JDK-17.png)
 
 
-
-## OpenJDK-17  Detected Java Problems in JADE v4.5.4-r6868
-
-First 80 problems detected by the JDK-17 compiler. They are not important, and that is why the  `master` branch contains the original source-code of JADE-4.5.4-6868, and the `p20-JADE` branch contains the corrections and performance tests.
-
-| Nord. |  Description  |  Resource  |  Path  |  Location  |  Type  |  
-| :---: |  :---         |  :---      |  :---  |  :---      |  :---  |  
-| 1       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  APDescriptionPanel.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 107  |  Java Problem  |  
-| 2       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  APServicePanel.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 105  |  Java Problem  |  
-| 3       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  APServicePanel.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 105  |  Java Problem  |  
-| 4       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 172  |  Java Problem  |  
-| 5       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 219  |  Java Problem  |  
-| 6       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 297  |  Java Problem  |  
-| 7       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 308  |  Java Problem  |  
-| 8       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 610  |  Java Problem  |  
-| 9       |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 610  |  Java Problem  |  
-| 10      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 674  |  Java Problem  |  
-| 11      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 791  |  Java Problem  |  
-| 12      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 1196  |  Java Problem  |  
-| 13      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AclGui.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 1196  |  Java Problem  |  
-| 14      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AgentList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/sniffer  |  line 54  |  Java Problem  |  
-| 15      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AgentTree.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 910  |  Java Problem  |  
-| 16      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  AggregateHelper.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 171  |  Java Problem  |  
-| 17      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ArrayList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util/leap  |  line 54  |  Java Problem  |  
-| 18      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ArrayList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util/leap  |  line 61  |  Java Problem  |  
-| 19      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ArrayList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util/leap  |  line 67  |  Java Problem  |  
-| 20      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ArrayList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util/leap  |  line 250  |  Java Problem  |  
-| 21      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  BEManagementService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/imtp/leap/nio  |  line 1346  |  Java Problem  |  
-| 22      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  CFReflectiveIntrospector.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 67  |  Java Problem  |  
-| 23      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ClassFinder.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util  |  line 61  |  Java Problem  |  
-| 24      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ClassFinder.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util  |  line 113  |  Java Problem  |  
-| 25      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ClassFinder.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util  |  line 143  |  Java Problem  |  
-| 26      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ClassFinder.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/util  |  line 344  |  Java Problem  |  
-| 27      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ClassSelectionDialog.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 116  |  Java Problem  |  
-| 28      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  ExtendedSLParser.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/lang/sl  |  line 1124  |  Java Problem  |  
-| 29      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  JavaLoggingLogManagerImpl.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/logging  |  line 59  |  Java Problem  |  
-| 30      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  JavaLoggingLogManagerImpl.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/logging  |  line 86  |  Java Problem  |  
-| 31      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MMCanvas.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/sniffer  |  line 101  |  Java Problem  |  
-| 32      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MainDetectionManager.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core  |  line 275  |  Java Problem  |  
-| 33      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MainPanel.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/rma  |  line 232  |  Java Problem  |  
-| 34      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MainPanel.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/rma  |  line 232  |  Java Problem  |  
-| 35      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MessageList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/sniffer  |  line 45  |  Java Problem  |  
-| 36      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MessageTransportProtocol.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/mtp/iiop  |  line 246  |  Java Problem  |  
-| 37      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MessageTransportProtocol.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/mtp/iiop  |  line 264  |  Java Problem  |  
-| 38      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MessageTransportProtocol.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/mtp/iiop  |  line 301  |  Java Problem  |  
-| 39      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  MessageTransportProtocol.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/mtp/iiop  |  line 572  |  Java Problem  |  
-| 40      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  Ontology.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 872  |  Java Problem  |  
-| 41      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  Ontology.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 897  |  Java Problem  |  
-| 42      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  Ontology.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 922  |  Java Problem  |  
-| 43      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  Ontology.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 928  |  Java Problem  |  
-| 44      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  RequestFIPAServiceBehaviour.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/domain  |  line 292  |  Java Problem  |  
-| 45      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  SLParser.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/lang/sl  |  line 1058  |  Java Problem  |  
-| 46      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  StartDialog.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/tools/rma  |  line 300  |  Java Problem  |  
-| 47      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  TopicTable.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/messaging  |  line 88  |  Java Problem  |  
-| 48      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  TopicTable.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/messaging  |  line 97  |  Java Problem  |  
-| 49      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  VisualPropertiesList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 59  |  Java Problem  |  
-| 50      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  VisualPropertiesList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 65  |  Java Problem  |  
-| 51      |  ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized  |  VisualPropertiesList.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 65  |  Java Problem  |  
-| 52      |  Boolean is a value-based type which is a discouraged argument for the synchronized statement  |  GuiAgent.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 94  |  Java Problem  |  
-| 53      |  Boolean is a value-based type which is a discouraged argument for the synchronized statement  |  GuiAgent.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/gui  |  line 153  |  Java Problem  |  
-| 54      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsAgentAction.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 60  |  Java Problem  |  
-| 55      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsAgentAction.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 61  |  Java Problem  |  
-| 56      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsConcept.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 68  |  Java Problem  |  
-| 57      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsConcept.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 69  |  Java Problem  |  
-| 58      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsHelper.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 753  |  Java Problem  |  
-| 59      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsIRE.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 135  |  Java Problem  |  
-| 60      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsIRE.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 136  |  Java Problem  |  
-| 61      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsPredicate.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 79  |  Java Problem  |  
-| 62      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsPredicate.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 80  |  Java Problem  |  
-| 63      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsReference.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 127  |  Java Problem  |  
-| 64      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsReference.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 128  |  Java Problem  |  
-| 65      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsVariable.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 114  |  Java Problem  |  
-| 66      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AbsVariable.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/abs  |  line 115  |  Java Problem  |  
-| 67      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AddressNotificationService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/replication  |  line 72  |  Java Problem  |  
-| 68      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  Agent.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core  |  line 1350  |  Java Problem  |  
-| 69      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentContainerImpl.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core  |  line 1154  |  Java Problem  |  
-| 70      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentManagementService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/management  |  line 141  |  Java Problem  |  
-| 71      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentManagementService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/management  |  line 968  |  Java Problem  |  
-| 72      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentManagementService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/management  |  line 969  |  Java Problem  |  
-| 73      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentMobilityService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/mobility  |  line 158  |  Java Problem  |  
-| 74      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentMobilityService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/mobility  |  line 1357  |  Java Problem  |  
-| 75      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentMobilityService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/mobility  |  line 1377  |  Java Problem  |  
-| 76      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentMobilityService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/mobility  |  line 1381  |  Java Problem  |  
-| 77      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AgentReplicationService.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/core/replication  |  line 145  |  Java Problem  |  
-| 78      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AggregateHelper.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 49  |  Java Problem  |  
-| 79      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AggregateHelper.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 75  |  Java Problem  |  
-| 80      |  Class is a raw type. References to generic type Class<T> should be parameterized  |  AggregateHelper.java  |  /JADE-Core-v4.5.4-r6867/src/main/java/com.tilab.jade/jade/content/onto  |  line 78  |  Java Problem  |  

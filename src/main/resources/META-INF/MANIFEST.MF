@@ -1,0 +1,15 @@
+Main-Class: jade.Boot
+
+Name: Jade Informations
+Specification-Version: 4.5.4
+SVN-Revision: 6868
+SVN-Date: 14-07-2022
+SVN-Author: Enrico Scagliotti (6867) and Giovanni Caire (6868)
+SVN-Source: https://jade.tilab.com/svn/jade/trunk
+SVN-DateComplete: jueves, 14 de julio de 2022 11:06:20
+SVN-Message: Properly logged the stack-trace when an unexpected error occurs creating an agent
+Proposal-name: P20-JADE-FIPAA  
+Proposal-repo:  GitHub <https://github.com/dpsframework/p20-jade-fipa>
+Proposal-corba: <https://repo1.maven.org/maven2/org/glassfish/corba/glassfish-corba-omgapi/4.1.0/>
+Proposal-corba-file: glassfish-corba-omgapi-4.1.0-sources.jar 2017-07-14 15:15  1470786 Bytes
+Proposal-apache-commons: <https://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.3.tar.gz>
