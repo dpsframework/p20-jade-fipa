@@ -1,4 +1,4 @@
-# p20-jade-fipa: a proposal to upgrade JADE-v4.5.4-r6868
+# p20-jade-fipa: <br>a proposal to upgrade JADE-v4.5.4-r6868
 
 Full description of this proposal is available at:
 -  <https://dpsframework.org/proposals/P20-JADE-FIPA_en.html>
