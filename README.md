@@ -24,7 +24,7 @@ Full description of this proposal is available at:
  mvn package
 ```
 - That's all!
-- This generates `jade-4.5.4-6868.jar` ready to use.
+- This generates an autonomous `jade-4.5.4-6868.jar` ready to use.
 
 ### 1.2 A starting point for new proposals:
 
