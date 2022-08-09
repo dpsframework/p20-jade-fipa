@@ -1,4 +1,4 @@
-# p20-jade-fipa: <br>a proposal to upgrade JADE-v4.5.4-r6868
+# p20-jade-fipa: <br>JADE-FIPA update proposal to be compiled on OpenJDK-11 the JADE-v4.5.4-r6868 version
 
 Full description of this proposal is available at:
 -  <https://dpsframework.org/proposals/P20-JADE-FIPA_en.html>
