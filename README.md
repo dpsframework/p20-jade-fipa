@@ -11,7 +11,7 @@
 
 1. Esta es la versión exacta de JADE-4.5.4-6868, copiada de JADE Trunk, que ha sido preparada para ser compilada con Maven.
 
-1. Esta propuesta es una organización simple del código JADE, que utiliza las fuentes de las librerías CORBA y Apache Commons Codec. Esta versión de JADE (jade-4.5.4-6868.jar). Y puede ser un punto de partida perfecto para iniciar análisis más profundos de la Plataforma JADE y de su evolución en los próximos 5 años por ejemplo.
+1. Esta propuesta es una organización simple del código JADE, que utiliza las fuentes de las librerías CORBA y Apache Commons Codec. Esta versión de JADE (jade-4.5.4-6868.jar), puede ser un punto de partida perfecto para iniciar análisis más profundos de la Plataforma JADE y de su evolución en los próximos 5 años por ejemplo.
 
 1. Por supuesto, todo esto es gracias al esfuerzo del Equipo de TILAB.com. Y también, es gracias a la evolución propuesta en Java para el uso del Java Platform Module System.
 
