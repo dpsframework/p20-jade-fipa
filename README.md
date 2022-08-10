@@ -1,36 +1,40 @@
-# p20-jade-fipa: <br>JADE-FIPA update proposal to be compiled on OpenJDK-11 the JADE-v4.5.4-r6868 version
+# p20-jade-fipa: <br>Solicitud de mejora de JADE-FIPA para permitir su compilación con OpenJDK-18, JDK-17 LTS y versiones anteriores de Java
 
-Full description of this proposal is available at:
--  <https://dpsframework.org/proposals/P20-JADE-FIPA_en.html>
+- [English version here...](README_en.md)
 
+### Basado en Trunk oficial: JADE-v4.5.4-r6868
 
-## 1. Introduction
-
-1. This is the exact version of JADE-4.5.4-6868, copied from the JADE Trunk, which has been prepared to be compiled with Maven.
-
-1. This proposal is a simple organization of the JADE code, which uses the sources of the CORBA and Apache Commons Codec libraries. This version of JADE (jade-4.5.4-6868.jar) is a perfect starting point to start a deeper analysis of the JADE Platform and its evolution in the next 5 years.
-
-1. Of course, all this is thanks to the efforts of the TILAB Team. And also, it is thanks to the proposed evolution in Java for the use of the Java Platform Module System.
+- La descripción esta solicitud se encuentra en: [dpsFramework - p20-jade-fipa](https://dpsframework.org/proposals/P20-JADE-FIPA_en.html)
 
 
-### 1.1. To obtain the current version of JADE
+## 1. Antecedentes
 
-- **Use Maven for full packaging using:**
+1. Esta es la versión exacta de JADE-4.5.4-6868, copiada de JADE Trunk, que ha sido preparada para ser compilada con Maven.
+
+1. Esta propuesta es una organización simple del código JADE, que utiliza las fuentes de las librerías CORBA y Apache Commons Codec. Esta versión de JADE (jade-4.5.4-6868.jar) y, es un punto de partida perfecto para iniciar análisis más profundos de la Plataforma JADE y de su evolución en los próximos 5 años.
+
+1. Por supuesto, todo esto es gracias al esfuerzo del Equipo de TILAB.com. Y también, es gracias a la evolución propuesta en Java para el uso del Java Platform Module System.
+
+
+### 1.1. Cómo obtener la versión de JADE-4.5.4-r6868
+
+- **Use Maven para obtener la librería usando:**
 
 ```shell
- git clone https://github.com/dpsframework/p20-jade-fipa.git
- cd  p20-jade-fipa
+git clone https://github.com/dpsframework/p20-jade-fipa.git
+cd  p20-jade-fipa
 
- mvn package
+mvn package
+
 ```
-- That's all!
-- This generates, on `./target/` directory, an autonomous `jade-4.5.4-6868.jar` ready to use.
+- ¡Eso es todo!
+- El resultado en el directorio `./target/`, es el archivo `jade-4.5.4-6868.jar` autónomo y listo para usar JADE.
 
-### 1.2 A starting point for new proposals:
+### 1.2 Un punto de partida para nuevas propuestas:
 
-#### 1.2.1. Take a look at the file: `module-info.java`
+#### 1.2.1. Echar un vistazo al archivo: `module-info.java`
 
-- It is located in the /src/main/java/jade/ directory.
+- Se encuentra en el directorio /src/main/java/jade/.
 
 ```java
 /**
@@ -68,9 +72,9 @@ module com.tilab.jade {
 
 ```
 
+#### 1.2.2. Para obtener la versión anterior compilada manualmente, puede hacerse desde consola con:
 
-#### 1.2.2. To make a manual compiling/packaging from the console
-
+- **En Ms-Windows**:
 - **On Windows console**:
 
 ```shell
@@ -79,7 +83,7 @@ module com.tilab.jade {
 ```
 
 
-- **On GNU-Linux or OS-X**:
+- **Sobre GNU-Linux o OS-X**:
 
 ```shell
  rsync   -av --exclude=*java  src/main/java/   target/classes/
@@ -88,7 +92,7 @@ module com.tilab.jade {
 
 
 
-- **Compiling and packaging by-hand with**:
+- **Compilar y empaquetar a mano con:**:
 
 ```shell
  javac   -d   target/classes    @sources-jade.list
@@ -96,31 +100,33 @@ module com.tilab.jade {
  jar     --update --file jade-4.5.4-6868.jar --manifest=src/main/resources/META-INF/MANIFEST.MF
 ```
 
-- **And check the result again with**:
+- **Comprobar de nuevo el resultado con:**:
 
 ```shell 
  java -jar jade-4.5.4-6868.jar -gui
 ```
 
-- **If you need to access the JADE platform from port 7778**, you need to use **--add-opens** with Java JDK-9 or higher. To do this proceed with:
+- **Si necesita acceder a la plataforma JADE desde el puerto de escucha 7778**, debe utilizar:**
+
+`--add-opens` sobre Java JDK-9 o superior. Para hacer esto proceda con:
 
 ```shell
 
  java --add-opens java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED -jar jade-4.5.4-6868.jar -gui
 ```
 
-- **And test it with**:
+- **Y puede comprobarlo con**:
 
 ```shell
  http://localhost:7778/acc/
  
 ```
-- To obtain `WARNING: Malformed POST` on JADE Console output.
+
+
+- Si ha obtenido una advertencia del tipo: `WARNING: Malformed POST` entonces todo ha sido correcto y el formato de la sentencia POST no ha sido la correcta aunque sí ha sido procesada por JADE.
 
 
 
-**Fig. 1**: From the JADE RMA Agent Actions menu, an agent of type `jade.tools.testagent.TestAgent` named **Test22** has been created. It is visible in the lower left corner. With the "Start-DummigAgent" button, the agent named "da0@local-ip-address/JADE" has been created. And an INFORM type message with "fipa-request" Interaction Protocol has been sent between these entities. The message is received and displayed by the Test22 agent.
+**Fig. 1**: Desde el menú Acciones del agente JADE RMA, se ha creado un agente de tipo `jade.tools.testagent.TestAgent` denominado **Test22**. Es visible en la esquina inferior izquierda. Con el botón "Iniciar-DummigAgent", se ha creado el agente denominado "da0@dirección-ip-local/JADE". Y entre estas entidades se ha enviado un mensaje de tipo INFORM con Protocolo de Interacción "fipa-request". El mensaje es recibido y mostrado por el agente Test22.
 
-![Results of test](./images/test-jade-rma-agent-454-6868-Java-JDK-17.png)
-
-
+![Resultados de la prueba con JADE-4.5.4-r6868 compilado con OpenJDK-18](./images/test-jade-rma-agent-454-6868-Java-JDK-17.png)
