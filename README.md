@@ -4,7 +4,7 @@
 
 ### Basado en Trunk oficial: JADE-v4.5.4-r6868
 
-- La descripción esta solicitud se encuentra en: [dpsFramework - p20-jade-fipa](https://dpsframework.org/proposals/P20-JADE-FIPA_en.html)
+- La descripción esta solicitud se encuentra en: [dpsFramework - p20-jade-fipa](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
 
 
 ## 1. Antecedentes
