@@ -114,13 +114,14 @@ mvn-package
 
 
 - Compile and package by hand:
-- 
+
+
 ```shell
  javac   -d   target/classes    @sources-jade.list
  jar     --create --file  jade-4.5.4-6868.jar  -C target/classes  .
  jar     --update --file jade-4.5.4-6868.jar --manifest=src/main/resources/META-INF/MANIFEST.MF
 ```
-```
+
 
 - **Check the result again with:**:
 
