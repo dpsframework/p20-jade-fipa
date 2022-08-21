@@ -5,7 +5,7 @@
 
 ## 1. Propuesta de actualización: P20-JADE-FIPA (Finalizada)
 
-- [Descripción de la propuesta en...](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
+- [Descripción de la propuesta en...https://dpsframework.org/proposals/P20-JADE-FIPA](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
 
 ### 1.1. Cómo generar la librería: `jade-4.5.4-6868.jar` con Maven
 
@@ -75,7 +75,7 @@ mvn package
 
 ## 1. Update proposal: P20-JADE-FIPA (COMPLETED)
 
-- [Description of the proposal in...](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
+- [Description of the proposal in...https://dpsframework.org/proposals/P20-JADE-FIPA](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
 
 ### 1.1. How to generate the library: `jade-4.5.4-6868.jar` with Maven
 
