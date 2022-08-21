@@ -75,7 +75,7 @@ mvn package
 
 ## 1. Update proposal: P20-JADE-FIPA (COMPLETED)
 
-- [Description of the proposal in...https://dpsframework.org/proposals/P20-JADE-FIPA](https://dpsframework.org/proposals/P20-JADE-FIPA_es.html)
+- [Description of the proposal in...https://dpsframework.org/proposals/P20-JADE-FIPA](https://dpsframework.org/proposals/P20-JADE-FIPA_en.html)
 
 ### 1.1. How to generate the library: `jade-4.5.4-6868.jar` with Maven
 
