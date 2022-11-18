@@ -85,7 +85,7 @@ mvn package
 git clone https://github.com/dpsframework/p20-jade-fipa.git
 cd p20-jade-fipa
 
-mvn-package
+mvn package
 ```
 
 - In directory: `./target/`, the file `jade-4.5.4-6868.jar` is the full version of the JADE Platform that can operate autonomously until the future revision of JADE.
